@@ -46,6 +46,16 @@ class DefaultTheme {
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
           ),
+          bodyText1: TextStyle(
+            color: Color(0xFfFFFFFF),
+            fontFamily: 'Montserrat',
+            fontSize: 16.0,
+          ),
+          bodyText2: TextStyle(
+            color: Color(0xFfFFFFFF),
+            fontFamily: 'Montserrat',
+            fontSize: 14.0,
+          ),
           /* bodyLarge: const TextStyle(
             color: Color(0xFfC3C8D4),
             fontFamily: 'Montserrat',
@@ -61,6 +71,7 @@ class DefaultTheme {
             fontFamily: 'Montserrat',
             fontSize: 14.0,
           ), */
+
           caption: TextStyle(
             color: Color(0xFfFFFFFF),
             fontFamily: 'Montserrat',
