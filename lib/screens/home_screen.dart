@@ -27,9 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    //ApiCallsProvider().fetchMovies();
-    //_movies.addAll(ApiCallsProvider().getMovies);
-    print('initState ' + _movies.toString());
     super.initState();
   }
 
@@ -41,26 +38,62 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         shadowColor: Colors.transparent,
-        //foregroundColor: Colors.transparent,
-
         backgroundColor: Theme.of(context).backgroundColor,
-        actions: [
-          IconButton(
-            icon: const FaIcon(
-              FontAwesomeIcons.signOutAlt,
-            ),
-            onPressed: () {
-              ApiCallsProvider().logout();
-              Navigator.of(context).pushReplacementNamed('/login');
-            },
-          ),
-        ],
       ),
       body: FutureBuilder(
         future: fetchedMovies,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return MovieGrid(snapshot.data! as List<Movie>);
+            return (snapshot.data! as List<Movie>).isEmpty
+                ? const Center(child: EmptyListWidget())
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    'My Movies',
+                                    style: Theme.of(context).textTheme.headline3,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const FaIcon(
+                                    FontAwesomeIcons.plusCircle,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ],
+                            ),
+                            IconButton(
+                              icon: const FaIcon(
+                                FontAwesomeIcons.signOutAlt,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                ApiCallsProvider().logout();
+
+                                Navigator.of(context)
+                                    .pushReplacementNamed('/login');
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          child: MovieGrid(snapshot.data! as List<Movie>),
+                        ),
+                      ],
+                    ),
+                  );
           } else if (snapshot.hasError) {
             return Center(
               child: Text(
@@ -72,10 +105,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           }
-          return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
-            ),
+          return CircularProgressIndicator(
+            color: Theme.of(context).primaryColor,
           );
         },
       ),

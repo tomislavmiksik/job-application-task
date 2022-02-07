@@ -57,7 +57,7 @@ class ApiCallsProvider with ChangeNotifier {
 
   Future<List<Movie>> fetchMovies() async {
     List<Movie> tmpMovies = [];
-    var tmpToken = await getToken();
+    //var tmpToken = await getToken();
     token = (await getToken()).toString();
 
     try {
@@ -72,6 +72,7 @@ class ApiCallsProvider with ChangeNotifier {
       responseData.forEach(
         (element) {
           Movie movie = Movie(
+            id:  element['id'],
             title: element['attributes']['name'],
             year: element['attributes']['publicationYear'],
             posterUrl: element['attributes']['poster']['data']['attributes']

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:job_application_task/screens/edit_movie_screen.dart';
 import 'package:job_application_task/screens/home_screen.dart';
 import 'package:job_application_task/screens/loading_screen.dart';
 import 'package:job_application_task/screens/login_screen.dart';
@@ -7,7 +8,7 @@ import 'package:job_application_task/services/api_calls.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'themes/default_theme.dart';
+import 'constants/default_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
           '/': (ctx) => LoadingScreen(),
           LoginScreen.routeName : (ctx) => LoginScreen(),
           HomeScreen.routeName: (ctx) => HomeScreen(),
+          EditMovieScreen.routeName: (ctx) => EditMovieScreen(),
         },
       ),
     );

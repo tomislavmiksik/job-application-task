@@ -10,6 +10,7 @@ class DefaultTheme {
         cardColor: const Color(0xFF092C39),
         errorColor: const Color(0xFFEB5757),
         textTheme: const TextTheme(
+          
           headline1: TextStyle(
             color: Color(0xFfFFFFFF),
             fontFamily: 'Montserrat',
