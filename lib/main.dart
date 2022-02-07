@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:job_application_task/screens/home_screen.dart';
+import 'package:job_application_task/screens/loading_screen.dart';
 import 'package:job_application_task/screens/login_screen.dart';
 import 'package:job_application_task/services/api_calls.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +51,8 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: DefaultTheme().theme,
         routes: {
-          '/': (ctx) => LoginScreen(),
+          '/': (ctx) => LoadingScreen(),
+          LoginScreen.routeName : (ctx) => LoginScreen(),
           HomeScreen.routeName: (ctx) => HomeScreen(),
         },
       ),

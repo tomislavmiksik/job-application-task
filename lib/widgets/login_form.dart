@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:job_application_task/screens/home_screen.dart';
 import 'package:job_application_task/services/api_calls.dart';
 
-import 'error_dialog_widget.dart';
+import 'error_dialog.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -21,6 +21,7 @@ class _LoginFormState extends State<LoginForm> {
   final _form = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
   updateCheck(value) {
     setState(() {
       checkValue = value;
@@ -29,13 +30,16 @@ class _LoginFormState extends State<LoginForm> {
 
   submitForm() async {
     //_form.currentState?.save();
-
-    try {
-      await ApiCallsProvider()
-          .login(_emailController.text, _passwordController.text, checkValue);
-      Navigator.of(context).pushNamed(HomeScreen.routeName);
-    } catch (error) {
-      showDialog(context: context, builder: (ctx) => ErrorDialog());
+    if (ApiCallsProvider().getToken() != null) {
+      try {
+        await ApiCallsProvider()
+            .login(_emailController.text, _passwordController.text, checkValue);
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      } catch (error) {
+        showDialog(context: context, builder: (ctx) => ErrorDialog());
+      }
+    } else {
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     }
   }
 
