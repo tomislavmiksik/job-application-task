@@ -26,8 +26,10 @@ class ApiCallsProvider with ChangeNotifier {
     try {
       var response =
           await Dio().post(baseUrl + '/api/auth/local', data: formData);
-      token = response.data['jwt'];
-      print('response ' + response.data['jwt']);
+      token = await response.data['jwt'];
+
+      await prefs.setString('tmpToken', token);
+
       if (checkValue) {
         await prefs.setString('token', token);
       }
@@ -40,8 +42,12 @@ class ApiCallsProvider with ChangeNotifier {
 
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    print('token ' + prefs.getString('token').toString());
-    return prefs.getString('token');
+
+    if (prefs.getString('token') != null) {
+      return prefs.getString('token');
+    } else {
+      return prefs.getString('tmpToken');
+    }
   }
 
   Future<void> logout() async {
@@ -50,10 +56,9 @@ class ApiCallsProvider with ChangeNotifier {
   }
 
   Future<List<Movie>> fetchMovies() async {
-    print('neki k u fetchMovies ');
     List<Movie> tmpMovies = [];
-
-    token = (await getToken())!;
+    var tmpToken = await getToken();
+    token = (await getToken()).toString();
 
     try {
       var response = await Dio().get(

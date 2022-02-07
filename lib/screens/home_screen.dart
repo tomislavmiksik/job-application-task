@@ -60,12 +60,12 @@ class _HomeScreenState extends State<HomeScreen> {
         future: fetchedMovies,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return MovieGrid(snapshot.data as List<Movie>);
+            return MovieGrid(snapshot.data! as List<Movie>);
           } else if (snapshot.hasError) {
             return Center(
               child: Text(
                 '${snapshot.error}',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.red,
                   fontSize: 20,
                 ),

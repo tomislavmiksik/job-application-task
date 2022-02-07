@@ -15,22 +15,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+
     String? token = await ApiCallsProvider().getToken();
-
-    List<Movie> movies = [];
-    
-
-    if (token != null) {
-      //await ApiCallsProvider().fetchMovies();
-      
-      movies = await ApiCallsProvider().getMovies;
-    }
 
     Future.delayed(
       const Duration(seconds: 2),
       () async {
         if (token != null) {
-          //await ApiCallsProvider().fetchMovies();
           Navigator.pushReplacementNamed(context, '/home');
         } else {
           Navigator.pushReplacementNamed(context, '/login');

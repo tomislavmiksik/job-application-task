@@ -23,6 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   final _passwordController = TextEditingController();
 
   updateCheck(value) {
+
     setState(() {
       checkValue = value;
     });

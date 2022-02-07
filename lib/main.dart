@@ -5,10 +5,17 @@ import 'package:job_application_task/screens/loading_screen.dart';
 import 'package:job_application_task/screens/login_screen.dart';
 import 'package:job_application_task/services/api_calls.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'themes/default_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  print(prefs.getString('tmpToken'));
+  await prefs.remove('tmpToken');
+  
   runApp(const MyApp());
 }
 
