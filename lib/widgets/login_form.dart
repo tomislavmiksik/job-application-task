@@ -65,7 +65,6 @@ class _LoginFormState extends State<LoginForm> {
                 fontWeight: FontWeight.bold,
               ),
               filled: true,
-
               fillColor: Theme.of(context).inputDecorationTheme.fillColor,
               labelText: 'Email',
               labelStyle: const TextStyle(

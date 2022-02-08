@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class Movie {
+class Movie with ChangeNotifier {
   int? id;
   String? title;
   int? year;
@@ -12,4 +12,18 @@ class Movie {
     this.year,
     this.posterUrl,
   });
+
+  void editMovie(
+    int? id,
+    String? title,
+    int? year,
+    String? posterUrl,
+  ) {
+    this.id = id;
+    this.title = title;
+    this.year = year;
+    this.posterUrl = posterUrl;
+    notifyListeners();
+  }
+  
 }

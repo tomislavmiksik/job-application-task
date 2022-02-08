@@ -6,6 +6,7 @@ import 'package:job_application_task/models/movie.dart';
 import 'package:job_application_task/services/api_calls.dart';
 import 'package:job_application_task/widgets/empty_list.dart';
 import 'package:job_application_task/widgets/movie_grid.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,9 +20,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Movie> _movies = [];
   bool _isLoading = false;
+  var apiProv;
 
   @override
-  void didChangeDependencies() async {
+  void didChangeDependencies() {
     super.didChangeDependencies();
   }
 
@@ -32,8 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Future<List<Movie>> fetchedMovies = ApiCallsProvider().fetchMovies();
-
+    final Future<void> fetchedMovies = ApiCallsProvider().fetchMovies();
+    apiProv = Provider.of<ApiCallsProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -44,8 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
         future: fetchedMovies,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return (snapshot.data! as List<Movie>).isEmpty
-                ? const Center(child: EmptyListWidget())
+            return apiProv.getMovies.isEmpty
+                ? const Center(
+                    child: EmptyListWidget(),
+                  )
                 : SingleChildScrollView(
                     child: Column(
                       children: [
@@ -59,7 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     'My Movies',
-                                    style: Theme.of(context).textTheme.headline3,
+                                    style:
+                                        Theme.of(context).textTheme.headline3,
                                   ),
                                 ),
                                 IconButton(
@@ -68,7 +73,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.white,
                                     size: 20,
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/edit-movie',
+                                      arguments: {'id': 0},
+                                    );
+                                  },
                                 ),
                               ],
                             ),
@@ -105,8 +116,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           }
-          return CircularProgressIndicator(
-            color: Theme.of(context).primaryColor,
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ),
           );
         },
       ),

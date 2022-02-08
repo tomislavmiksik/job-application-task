@@ -16,7 +16,6 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   print(prefs.getString('tmpToken'));
   await prefs.remove('tmpToken');
-  
   runApp(const MyApp());
 }
 
@@ -43,20 +42,8 @@ class MyApp extends StatelessWidget {
           Locale('es', ''), 
           Locale('hr', ''),
           Locale('de', ''),
-          Locale('fr', ''),
-          Locale('it', ''),
-          Locale('pt', ''),
-          Locale('ru', ''),
-          Locale('tr', ''),
-          Locale('zh', ''),
-          Locale('ja', ''),
-          Locale('ko', ''),
-          Locale('nl', ''),
-          Locale('sv', ''),
-          Locale('pl', ''),
-          Locale('da', ''),
         ],
-        title: 'Flutter Demo',
+        title: 'Movie App',
         theme: DefaultTheme().theme,
         routes: {
           '/': (ctx) => LoadingScreen(),

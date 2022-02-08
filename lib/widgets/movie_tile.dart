@@ -1,6 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:job_application_task/models/movie.dart';
+import 'package:job_application_task/screens/edit_movie_screen.dart';
 
 class MovieTile extends StatefulWidget {
   final Movie movie;
@@ -51,6 +52,16 @@ class _MovieTileState extends State<MovieTile> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
+                  onSelected: (value) {
+                    value == 1
+                        ? Navigator.of(context).pushNamed(
+                            EditMovieScreen.routeName,
+                            arguments: {
+                              'id': widget.movie.id,
+                            },
+                          )
+                        : null;//reserver for delete
+                  },
                   itemBuilder: (context) {
                     return [
                       PopupMenuItem(

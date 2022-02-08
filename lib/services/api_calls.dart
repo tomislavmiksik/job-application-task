@@ -11,7 +11,7 @@ class ApiCallsProvider with ChangeNotifier {
   final String baseUrl = 'https://zm-movies-assignment.herokuapp.com';
   String token = '';
 
-  List<Movie> movies = [];
+  List<Movie> _movies = [];
 
   Future<void> login(String email, String password, bool checkValue) async {
     final prefs = await SharedPreferences.getInstance();
@@ -45,8 +45,10 @@ class ApiCallsProvider with ChangeNotifier {
 
     if (prefs.getString('token') != null) {
       return prefs.getString('token');
-    } else {
+    } else if (prefs.getString('tmpToken') != null) {
       return prefs.getString('tmpToken');
+    } else {
+      return null;
     }
   }
 
@@ -60,6 +62,7 @@ class ApiCallsProvider with ChangeNotifier {
     //var tmpToken = await getToken();
     token = (await getToken()).toString();
 
+
     try {
       var response = await Dio().get(
         baseUrl + '/api/movies?populate=*',
@@ -69,33 +72,37 @@ class ApiCallsProvider with ChangeNotifier {
       );
 
       List responseData = response.data['data'];
-      responseData.forEach(
-        (element) {
-          Movie movie = Movie(
-            id:  element['id'],
+
+      for (var element in responseData) {
+        tmpMovies.add(
+          Movie(
+            id: element['id'],
             title: element['attributes']['name'],
             year: element['attributes']['publicationYear'],
             posterUrl: element['attributes']['poster']['data']['attributes']
                 ['formats']['small']['url'],
-          );
-          tmpMovies.add(movie);
-        },
-      );
-      movies.addAll(tmpMovies);
-      print('u fetcheru  movies ' + movies.toString());
+          ),
+        );
+      }
+      _movies = tmpMovies;
+      print('movies: ' + _movies.toString());
       notifyListeners();
-      return movies;
+      return _movies;
     } on DioError catch (e) {
       print(e.response!.statusMessage.toString());
       print(e.response!.statusCode.toString());
       rethrow;
     }
-
-    notifyListeners();
   }
 
   List<Movie> get getMovies {
-    //print('u getteru movies ' + movies[0].title.toString());
-    return movies;
+    print('movies u getteru ' + _movies.toString());
+    return [..._movies];
+  }
+
+  //find movie by id
+  Movie findMovieById(int id) {
+    //print(getMovies);
+    return getMovies.firstWhere((element) => element.id == id);
   }
 }
