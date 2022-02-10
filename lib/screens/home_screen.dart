@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:job_application_task/models/movie.dart';
 import 'package:job_application_task/services/api_calls.dart';
@@ -29,13 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    apiProv = Provider.of<ApiCallsProvider>(context);
+    //apiProv = Provider.of<ApiCallsProvider>(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final Future<void> fetchedMovies = ApiCallsProvider().fetchMovies();
+    apiProv = Provider.of<ApiCallsProvider>(context);
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -52,58 +54,73 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: EmptyListWidget(),
                   )
                 : SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    'My Movies',
-                                    style:
-                                        Theme.of(context).textTheme.headline3,
+                    child: RefreshIndicator(
+                      backgroundColor: Theme.of(context).backgroundColor,
+                      color: Theme.of(context).primaryColor,
+                      onRefresh: () async{
+                        apiProv.fetchMovies();
+                        setState(() {
+                          _movies = apiProv.getMovies;
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text(
+                                      'My Movies',
+                                      style:
+                                          Theme.of(context).textTheme.headline3,
+                                    ),
                                   ),
-                                ),
-                                IconButton(
-                                  icon: const FaIcon(
-                                    FontAwesomeIcons.plusCircle,
-                                    color: Colors.white,
-                                    size: 20,
+                                  IconButton(
+                                    icon: const FaIcon(
+                                      FontAwesomeIcons.plusCircle,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/edit-movie',
+                                        arguments: {'id': 0},
+                                      );
+                                    },
                                   ),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/edit-movie',
-                                      arguments: {'id': 0},
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                              icon: const FaIcon(
-                                FontAwesomeIcons.signOutAlt,
-                                color: Colors.white,
+                                ],
                               ),
-                              onPressed: () {
-                                ApiCallsProvider().logout();
-
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/login');
-                              },
+                              IconButton(
+                                icon: const FaIcon(
+                                  FontAwesomeIcons.signOutAlt,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  ApiCallsProvider().logout();
+                                  Navigator.of(context)
+                                      .pushReplacementNamed('/login');
+                                },
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            child: MovieGrid(snapshot.data! as List<Movie>),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: SvgPicture.asset(
+                              'assets/images/Vectors.svg',
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          child: MovieGrid(snapshot.data! as List<Movie>),
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   );
           } else if (snapshot.hasError) {

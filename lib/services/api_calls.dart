@@ -110,19 +110,27 @@ class ApiCallsProvider with ChangeNotifier {
     });
 
     try {
-      await Dio().post(
+      var response = await Dio().post(
         baseUrl + '/api/movies',
         data: formData,
         options: Options(
           headers: {'Authorization': 'Bearer $token'},
         ),
       );
+      //response.data['data'];
+      fetchMovies();
+      _movies.add(Movie(
+        id: response.data['data']['id'],
+        title: title,
+        year: year,
+        posterUrl: filePath,
+      ));
+      notifyListeners();
     } on DioError catch (e) {
       print(e.response!.data.toString());
       rethrow;
     }
-    fetchMovies();
-    notifyListeners();
+
   }
 
   Future<void> editMovie(
@@ -139,8 +147,8 @@ class ApiCallsProvider with ChangeNotifier {
         ),
       );
       _movies.removeWhere((element) => element.id == id);
+      fetchMovies();
       notifyListeners();
-      await fetchMovies();
     } on DioError catch (e) {
       print(e.response!.data.toString());
       rethrow;

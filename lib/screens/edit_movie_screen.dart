@@ -1,6 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:job_application_task/shared/input_field_decoration.dart';
 import 'package:provider/provider.dart';
 
 import '../models/movie.dart';
@@ -17,11 +18,12 @@ class EditMovieScreen extends StatefulWidget {
 
 class _EditMovieScreenState extends State<EditMovieScreen> {
   late Movie movie = Movie(
-    id: 0,
+    id: null,
     title: '',
     year: 0,
     posterUrl: '',
   );
+
   var _isInit = true;
   final _form = GlobalKey<FormState>();
   final _titleController = TextEditingController();
@@ -32,20 +34,27 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
 
   @override
   void didChangeDependencies() {
+
     if (_isInit) {
       final routeArgs =
-          ModalRoute.of(context)?.settings.arguments as Map<String, int?>;
+      ModalRoute.of(context)?.settings.arguments as Map<String, int?>;
       final apiProv = Provider.of<ApiCallsProvider>(context, listen: false);
       final movieId = routeArgs['id'];
 
-      if (movieId == 0) {
+      if (movieId == null || movieId == 0) {
         return;
       }
-      print(movieId);
 
-      movie = apiProv.findMovieById(movieId!.toInt());
+      print(movieId);
+      movie = apiProv.findMovieById(movieId.toInt());
     }
+    _yearController.text = movie.year.toString();
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+
   }
 
   Future<void> selectImage() async {
@@ -62,8 +71,8 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
     _form.currentState?.save();
 
     final apiProv = Provider.of<ApiCallsProvider>(context, listen: false);
-    apiProv.addMovie(
-        _titleController.text, int.parse(_yearController.text), image.path.toString());
+    apiProv.addMovie(_titleController.text, int.parse(_yearController.text),
+        image.path.toString());
     Navigator.of(context).pop();
   }
 
@@ -74,7 +83,7 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
       appBar: AppBar(
         shadowColor: Colors.transparent,
         backgroundColor: Theme.of(context).backgroundColor,
-        title: movie.id == 0
+        title: movie.id == null
             ? Text(
                 'Add a movie',
                 style: Theme.of(context).textTheme.headline3,
@@ -99,63 +108,18 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
                     style: Theme.of(context).textTheme.bodyText1,
                     controller: _titleController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      errorStyle: const TextStyle(
-                        color: Color(0xFFEB5757),
-                        fontWeight: FontWeight.bold,
-                      ),
-                      filled: true,
-                      fillColor:
-                          Theme.of(context).inputDecorationTheme.fillColor,
-                      labelStyle: const TextStyle(
-                        color: Colors.white,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                    ),
+                    decoration: InputFieldDecoration.buildInputDecoration(
+                        'Movie title', context),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
                     cursorColor: Theme.of(context).primaryColor,
                     textInputAction: TextInputAction.next,
                     style: Theme.of(context).textTheme.bodyText1,
-                    controller:
-                        _yearController,
+                    controller: _yearController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      errorStyle: const TextStyle(
-                        color: Color(0xFFEB5757),
-                        fontWeight: FontWeight.bold,
-                      ),
-                      filled: true,
-                      fillColor:
-                          Theme.of(context).inputDecorationTheme.fillColor,
-                      labelStyle: const TextStyle(
-                        color: Colors.white,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                    ),
+                    decoration: InputFieldDecoration.buildInputDecoration(
+                        'Year of release', context),
                   ),
                   const SizedBox(height: 20),
                   GestureDetector(

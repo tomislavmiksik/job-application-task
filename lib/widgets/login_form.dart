@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:job_application_task/screens/home_screen.dart';
 import 'package:job_application_task/services/api_calls.dart';
+import 'package:job_application_task/shared/input_field_decoration.dart';
 
 import 'error_dialog.dart';
 
@@ -35,7 +36,7 @@ class _LoginFormState extends State<LoginForm> {
       try {
         await ApiCallsProvider()
             .login(_emailController.text, _passwordController.text, checkValue);
-        await ApiCallsProvider().fetchMovies();
+        ApiCallsProvider().fetchMovies();
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       } catch (error) {
         showDialog(context: context, builder: (ctx) => const ErrorDialog());
@@ -58,30 +59,7 @@ class _LoginFormState extends State<LoginForm> {
             style: Theme.of(context).textTheme.bodyText1,
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              errorStyle: const TextStyle(
-                color: Color(0xFFEB5757),
-                fontWeight: FontWeight.bold,
-              ),
-              filled: true,
-              fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-              labelText: 'Email',
-              labelStyle: const TextStyle(
-                color: Colors.white,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: Colors.transparent,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: Colors.transparent,
-                ),
-              ),
-            ),
+            decoration: InputFieldDecoration.buildInputDecoration('Email', context),
           ),
           const SizedBox(
             height: 24,
@@ -95,30 +73,7 @@ class _LoginFormState extends State<LoginForm> {
             style: Theme.of(context).textTheme.bodyText1,
             controller: _passwordController,
             keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              errorStyle: const TextStyle(
-                color: Color(0xFFEB5757),
-                fontWeight: FontWeight.bold,
-              ),
-              filled: true,
-              fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-              labelText: 'Password',
-              labelStyle: const TextStyle(
-                color: Colors.white,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: Colors.transparent,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: Colors.transparent,
-                ),
-              ),
-            ),
+            decoration: InputFieldDecoration.buildInputDecoration('Password', context),
           ),
           const SizedBox(
             height: 16,

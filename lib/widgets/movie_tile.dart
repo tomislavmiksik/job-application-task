@@ -14,40 +14,51 @@ class MovieTile extends StatefulWidget {
 }
 
 class _MovieTileState extends State<MovieTile> {
-  
   void deleteMovie(int id) {
     showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              backgroundColor: Theme.of(context).backgroundColor,
-              title: const Text('Are you sure?'),
-              content: const Text(
-                'Do you want to delete this movie permanently?',
-                style: TextStyle(color: Colors.white),
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        backgroundColor: Theme.of(context).backgroundColor,
+        title: const Text('Are you sure?'),
+        content: const Text(
+          'Do you want to delete this movie permanently?',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        actions: [
+          MaterialButton(
+            child: const Text(
+              'No',
+              style: TextStyle(
+                color: Colors.white,
               ),
-              actions: [
-                MaterialButton(
-                    child: const Text(
-                      'No',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    color: Theme.of(context).errorColor,
-                    onPressed: () => Navigator.of(context).pop(false)),
-                MaterialButton(
-                  color: Theme.of(context).primaryColor,
-                  child: const Text(
-                    'Yes',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () {
-                    ApiCallsProvider().deleteMovie(id);
-                    Navigator.of(ctx).pop(true);
-                  },
-                ),
-              ],
-            ));
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            //color: Theme.of(context).errorColor,
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          MaterialButton(
+            //color: Theme.of(context).primaryColor,
 
-    //ApiCallsProvider().deleteMovie(id);
+            child: Text(
+              'Yes',
+              style: TextStyle(color: Theme.of(context).errorColor),
+            ),
+            onPressed: () async {
+              await ApiCallsProvider().deleteMovie(id);
+              ApiCallsProvider().fetchMovies();
+              Navigator.of(ctx).pop(true);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -100,7 +111,8 @@ class _MovieTileState extends State<MovieTile> {
                             },
                           )
                         : deleteMovie(
-                            widget.movie.id!.toInt()); //reserver for delete
+                            widget.movie.id!.toInt(),
+                          );
                   },
                   itemBuilder: (context) {
                     return [

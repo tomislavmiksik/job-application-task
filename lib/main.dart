@@ -43,18 +43,17 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const [
-          Locale('en', ''), 
-          Locale('es', ''), 
+          Locale('en', ''),
           Locale('hr', ''),
           Locale('de', ''),
         ],
         title: 'Movie App',
         theme: DefaultTheme().theme,
         routes: {
-          '/': (ctx) => LoadingScreen(),
-          LoginScreen.routeName : (ctx) => LoginScreen(),
-          HomeScreen.routeName: (ctx) => HomeScreen(),
-          EditMovieScreen.routeName: (ctx) => EditMovieScreen(),
+          '/': (ctx) => const LoadingScreen(),
+          LoginScreen.routeName : (ctx) => const LoginScreen(),
+          HomeScreen.routeName: (ctx) => const HomeScreen(),
+          EditMovieScreen.routeName: (ctx) => const EditMovieScreen(),
         },
       ),
     );
