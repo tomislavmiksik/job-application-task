@@ -14,8 +14,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  print(prefs.getString('tmpToken'));
+
   await prefs.remove('tmpToken');
+
+  //flushat 'token' kad se builda aplikacija inace sranje bude jer ostane token spremljen od prosle verzije
+  //
+  //
+  //await prefs.remove('token');
   runApp(const MyApp());
 }
 

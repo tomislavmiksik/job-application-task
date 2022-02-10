@@ -62,7 +62,6 @@ class ApiCallsProvider with ChangeNotifier {
     //var tmpToken = await getToken();
     token = (await getToken()).toString();
 
-
     try {
       var response = await Dio().get(
         baseUrl + '/api/movies?populate=*',
@@ -80,7 +79,7 @@ class ApiCallsProvider with ChangeNotifier {
             title: element['attributes']['name'],
             year: element['attributes']['publicationYear'],
             posterUrl: element['attributes']['poster']['data']['attributes']
-                ['formats']['small']['url'],
+                ['formats']['thumbnail']['url'],
           ),
         );
       }
@@ -93,6 +92,61 @@ class ApiCallsProvider with ChangeNotifier {
       print(e.response!.statusCode.toString());
       rethrow;
     }
+  }
+
+  Future<void> addMovie(String title, int year, String filePath) async {
+    token = (await getToken()).toString();
+    print('token u addMovie: ' + token);
+
+    var data = {
+      'name': title,
+      'publicationYear': year,
+    };
+
+    var formData = FormData.fromMap({
+      'data': jsonEncode(data),
+      'files.poster': await MultipartFile.fromFile(filePath,
+          filename: '${DateTime.now().millisecondsSinceEpoch}.jpg'),
+    });
+
+    try {
+      await Dio().post(
+        baseUrl + '/api/movies',
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+    } on DioError catch (e) {
+      print(e.response!.data.toString());
+      rethrow;
+    }
+    fetchMovies();
+    notifyListeners();
+  }
+
+  Future<void> editMovie(
+      int id, String title, int year, String filepath) async {}
+
+  Future<void> deleteMovie(int id) async {
+    token = (await getToken()).toString();
+
+    try {
+      await Dio().delete(
+        baseUrl + '/api/movies/$id',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+      _movies.removeWhere((element) => element.id == id);
+      notifyListeners();
+      await fetchMovies();
+    } on DioError catch (e) {
+      print(e.response!.data.toString());
+      rethrow;
+    }
+
+    //fetchMovies();
   }
 
   List<Movie> get getMovies {

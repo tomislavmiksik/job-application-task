@@ -23,7 +23,9 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
     posterUrl: '',
   );
   var _isInit = true;
-
+  final _form = GlobalKey<FormState>();
+  final _titleController = TextEditingController();
+  final _yearController = TextEditingController();
   var image;
 
   ImagePicker picker = ImagePicker();
@@ -47,7 +49,22 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
   }
 
   Future<void> selectImage() async {
-    XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      //print('URL ' + pickedImage!.path.toString());
+      this.image = pickedImage;
+    });
+  }
+
+  void _submitForm() {
+    final isValid = _form.currentState?.validate();
+    _form.currentState?.save();
+
+    final apiProv = Provider.of<ApiCallsProvider>(context, listen: false);
+    apiProv.addMovie(
+        _titleController.text, int.parse(_yearController.text), image.path.toString());
+    Navigator.of(context).pop();
   }
 
   @override
@@ -73,97 +90,136 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Form(
-              child: Column(children: [
-                const SizedBox(height: 40),
-                TextFormField(
-                  cursorColor: Theme.of(context).primaryColor,
-                  textInputAction: TextInputAction.next,
-                  style: Theme.of(context).textTheme.bodyText1,
-                  controller: TextEditingController(text: movie.title),
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    errorStyle: const TextStyle(
-                      color: Color(0xFFEB5757),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    filled: true,
-                    fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-                    labelStyle: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
+              child: Column(
+                children: [
+                  const SizedBox(height: 40),
+                  TextFormField(
+                    cursorColor: Theme.of(context).primaryColor,
+                    textInputAction: TextInputAction.next,
+                    style: Theme.of(context).textTheme.bodyText1,
+                    controller: _titleController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      errorStyle: const TextStyle(
+                        color: Color(0xFFEB5757),
+                        fontWeight: FontWeight.bold,
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).inputDecorationTheme.fillColor,
+                      labelStyle: const TextStyle(
+                        color: Colors.white,
                       ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  cursorColor: Theme.of(context).primaryColor,
-                  textInputAction: TextInputAction.next,
-                  style: Theme.of(context).textTheme.bodyText1,
-                  controller:
-                      TextEditingController(text: movie.year.toString()),
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    errorStyle: const TextStyle(
-                      color: Color(0xFFEB5757),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    filled: true,
-                    fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-                    labelStyle: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () => selectImage(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Theme.of(context).primaryColor,
-                        style: BorderStyle.solid,
-                        width: 2,
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    cursorColor: Theme.of(context).primaryColor,
+                    textInputAction: TextInputAction.next,
+                    style: Theme.of(context).textTheme.bodyText1,
+                    controller:
+                        _yearController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      errorStyle: const TextStyle(
+                        color: Color(0xFFEB5757),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      filled: true,
+                      fillColor:
+                          Theme.of(context).inputDecorationTheme.fillColor,
+                      labelStyle: const TextStyle(
+                        color: Colors.white,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
                       ),
                     ),
-                    height: 400,
-                    child: movie.posterUrl == null
-                        ? const Center(
-                            child: Text('Add an image'),
-                          )
-                        : Center(
-                            child: ExtendedImage.network(
-                              movie.posterUrl.toString(),
-                              fit: BoxFit.fill,
+                  ),
+                  const SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () => selectImage(),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                          style: BorderStyle.solid,
+                          width: 2,
+                        ),
+                      ),
+                      height: 400,
+                      child: image == null && movie.posterUrl == ''
+                          ? const Center(
+                              child: Text('Add an image'),
+                            )
+                          : image == null
+                              ? Center(
+                                  child: ExtendedImage.network(
+                                    movie.posterUrl.toString(),
+                                  ),
+                                )
+                              : Center(
+                                  child: Image.file(
+                                    File(image.path),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: ElevatedButton(
+                          //color: Theme.of(context).primaryColor,
+                          onPressed: () => _submitForm(),
+                          child: const Text(
+                            'Save',
+                            style: TextStyle(
+                              color: Colors.white,
                             ),
-
                           ),
-                  ),
-                ),
-              ]),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: ElevatedButton(
+                          //color: Theme.of(context).primaryColor,
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

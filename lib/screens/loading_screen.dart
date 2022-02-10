@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:job_application_task/models/movie.dart';
 import 'package:job_application_task/services/api_calls.dart';
@@ -37,14 +38,20 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Center(
-        child: isLoading
-            ? CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
-              )
-            : const Text(
-                'Loading...',
-              ),
+      body: Column(
+        children: [
+          Center(
+            child: isLoading
+                ? CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  )
+                : const Text(
+                    'Loading...',
+                  ),
+          ),
+
+
+        ],
       ),
     );
   }

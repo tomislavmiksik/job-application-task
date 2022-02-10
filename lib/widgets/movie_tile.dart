@@ -2,6 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:job_application_task/models/movie.dart';
 import 'package:job_application_task/screens/edit_movie_screen.dart';
+import 'package:job_application_task/services/api_calls.dart';
 
 class MovieTile extends StatefulWidget {
   final Movie movie;
@@ -13,6 +14,42 @@ class MovieTile extends StatefulWidget {
 }
 
 class _MovieTileState extends State<MovieTile> {
+  
+  void deleteMovie(int id) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              backgroundColor: Theme.of(context).backgroundColor,
+              title: const Text('Are you sure?'),
+              content: const Text(
+                'Do you want to delete this movie permanently?',
+                style: TextStyle(color: Colors.white),
+              ),
+              actions: [
+                MaterialButton(
+                    child: const Text(
+                      'No',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    color: Theme.of(context).errorColor,
+                    onPressed: () => Navigator.of(context).pop(false)),
+                MaterialButton(
+                  color: Theme.of(context).primaryColor,
+                  child: const Text(
+                    'Yes',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    ApiCallsProvider().deleteMovie(id);
+                    Navigator.of(ctx).pop(true);
+                  },
+                ),
+              ],
+            ));
+
+    //ApiCallsProvider().deleteMovie(id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,17 +63,19 @@ class _MovieTileState extends State<MovieTile> {
         children: <Widget>[
           Stack(
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.15,
-                child: ExtendedImage.network(
-                  widget.movie.posterUrl.toString(),
-                  fit: BoxFit.fill,
-                  cache: true,
-                  enableMemoryCache: true,
-                  shape: BoxShape.rectangle,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
+              Center(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: ExtendedImage.network(
+                    widget.movie.posterUrl.toString(),
+                    fit: BoxFit.cover,
+                    cache: true,
+                    enableMemoryCache: true,
+                    shape: BoxShape.rectangle,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                    ),
                   ),
                 ),
               ),
@@ -60,7 +99,8 @@ class _MovieTileState extends State<MovieTile> {
                               'id': widget.movie.id,
                             },
                           )
-                        : null;//reserver for delete
+                        : deleteMovie(
+                            widget.movie.id!.toInt()); //reserver for delete
                   },
                   itemBuilder: (context) {
                     return [

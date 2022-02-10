@@ -29,13 +29,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    apiProv = Provider.of<ApiCallsProvider>(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final Future<void> fetchedMovies = ApiCallsProvider().fetchMovies();
-    apiProv = Provider.of<ApiCallsProvider>(context);
+
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
