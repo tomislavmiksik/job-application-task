@@ -7,6 +7,22 @@ class DefaultTheme {
         inputDecorationTheme: const InputDecorationTheme(
           fillColor: Color(0xfF224957),
         ),
+        buttonTheme: const ButtonThemeData(
+          buttonColor: Color(0xFF2BD17E),
+          textTheme: ButtonTextTheme.primary,
+        ),
+        elevatedButtonTheme:  ElevatedButtonThemeData(
+          style:  ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color(0xFF2BD17E),
+                ),
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+        ),
         cardColor: const Color(0xFF092C39),
         errorColor: const Color(0xFFEB5757),
         textTheme: const TextTheme(

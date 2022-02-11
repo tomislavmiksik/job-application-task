@@ -82,6 +82,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               labelText: 'Password',
               suffixIcon: IconButton(
+                splashColor: Colors.transparent,
                 //splashRadius: 0,
                 icon: Icon(
                   _passwordVisible ? Icons.visibility : Icons.visibility_off,

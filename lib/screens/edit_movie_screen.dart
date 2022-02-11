@@ -34,10 +34,9 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
 
   @override
   void didChangeDependencies() {
-
     if (_isInit) {
       final routeArgs =
-      ModalRoute.of(context)?.settings.arguments as Map<String, int?>;
+          ModalRoute.of(context)?.settings.arguments as Map<String, int?>;
       final apiProv = Provider.of<ApiCallsProvider>(context, listen: false);
       final movieId = routeArgs['id'];
 
@@ -48,14 +47,13 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
       print(movieId);
       movie = apiProv.findMovieById(movieId.toInt());
     }
+    _titleController.text = movie.title.toString();
     _yearController.text = movie.year.toString();
     super.didChangeDependencies();
   }
 
   @override
-  void initState() {
-
-  }
+  void initState() {}
 
   Future<void> selectImage() async {
     XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
@@ -153,8 +151,8 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
                     ),
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(width: 20),
                       Expanded(
                         child: ElevatedButton(
                           //color: Theme.of(context).primaryColor,
@@ -176,6 +174,11 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
                             'Cancel',
                             style: TextStyle(
                               color: Colors.white,
+                            ),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).errorColor,
                             ),
                           ),
                         ),

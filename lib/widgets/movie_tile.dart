@@ -81,6 +81,7 @@ class _MovieTileState extends State<MovieTile> {
                     widget.movie.posterUrl.toString(),
                     fit: BoxFit.cover,
                     cache: true,
+                    width: double.infinity,
                     enableMemoryCache: true,
                     shape: BoxShape.rectangle,
                     borderRadius: const BorderRadius.only(
