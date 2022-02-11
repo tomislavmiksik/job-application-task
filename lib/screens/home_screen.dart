@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    //apiProv = Provider.of<ApiCallsProvider>(context);
+
     super.initState();
   }
 
@@ -38,8 +38,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final Future<void> fetchedMovies = ApiCallsProvider().fetchMovies();
     apiProv = Provider.of<ApiCallsProvider>(context);
-
     return Scaffold(
+      floatingActionButton: apiProv.getMovies.isEmpty
+          ? FloatingActionButton(
+              backgroundColor: Theme.of(context).primaryColor,
+              onPressed: () async {
+                apiProv.fetchMovies();
+                setState(
+                  () {
+                    _movies = apiProv.getMovies;
+                  },
+                );
+              },
+              child: const Icon(Icons.refresh),
+            )
+          : null,
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         shadowColor: Colors.transparent,
@@ -50,18 +63,20 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return apiProv.getMovies.isEmpty
-                ? const Center(
+                ? const SingleChildScrollView(
                     child: EmptyListWidget(),
                   )
                 : SingleChildScrollView(
                     child: RefreshIndicator(
                       backgroundColor: Theme.of(context).backgroundColor,
                       color: Theme.of(context).primaryColor,
-                      onRefresh: () async{
+                      onRefresh: () async {
                         apiProv.fetchMovies();
-                        setState(() {
-                          _movies = apiProv.getMovies;
-                        });
+                        setState(
+                          () {
+                            _movies = apiProv.getMovies;
+                          },
+                        );
                       },
                       child: Column(
                         children: [
@@ -102,8 +117,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 onPressed: () {
                                   ApiCallsProvider().logout();
-                                  Navigator.of(context)
-                                      .pushReplacementNamed('/login');
+                                  Navigator.of(
+                                    context,
+                                  ).pushReplacementNamed('/login');
                                 },
                               ),
                             ],
@@ -111,7 +127,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(height: 20),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.7,
-                            child: MovieGrid(snapshot.data! as List<Movie>),
+                            child: MovieGrid(
+                              snapshot.data! as List<Movie>,
+                            ),
                           ),
                           SizedBox(
                             width: MediaQuery.of(context).size.width,

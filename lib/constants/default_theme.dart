@@ -10,7 +10,24 @@ class DefaultTheme {
         cardColor: const Color(0xFF092C39),
         errorColor: const Color(0xFFEB5757),
         textTheme: const TextTheme(
-          
+          subtitle1: TextStyle(
+            fontFamily: 'Montserrat',
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+          subtitle2: TextStyle(
+            fontFamily: 'Montserrat',
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+          button: TextStyle(
+            fontFamily: 'Montserrat',
+            color: Colors.white,
+            fontSize: 18,
+            decorationColor: Colors.white,
+          ),
           headline1: TextStyle(
             color: Color(0xFfFFFFFF),
             fontFamily: 'Montserrat',
@@ -57,22 +74,6 @@ class DefaultTheme {
             fontFamily: 'Montserrat',
             fontSize: 14.0,
           ),
-          /* bodyLarge: const TextStyle(
-            color: Color(0xFfC3C8D4),
-            fontFamily: 'Montserrat',
-            fontSize: 20.0,
-          ),
-          bodyMedium: const TextStyle(
-            color: Color(0xFfC3C8D4),
-            fontFamily: 'Montserrat',
-            fontSize: 16.0,
-          ),
-          bodySmall: const TextStyle(
-            color: Color(0xFfC3C8D4),
-            fontFamily: 'Montserrat',
-            fontSize: 14.0,
-          ), */
-
           caption: TextStyle(
             color: Color(0xFfFFFFFF),
             fontFamily: 'Montserrat',

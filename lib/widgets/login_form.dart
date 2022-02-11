@@ -22,9 +22,9 @@ class _LoginFormState extends State<LoginForm> {
   final _form = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _passwordVisible = false;
 
   updateCheck(value) {
-
     setState(() {
       checkValue = value;
     });
@@ -36,7 +36,6 @@ class _LoginFormState extends State<LoginForm> {
       try {
         await ApiCallsProvider()
             .login(_emailController.text, _passwordController.text, checkValue);
-        ApiCallsProvider().fetchMovies();
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       } catch (error) {
         showDialog(context: context, builder: (ctx) => const ErrorDialog());
@@ -59,7 +58,8 @@ class _LoginFormState extends State<LoginForm> {
             style: Theme.of(context).textTheme.bodyText1,
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputFieldDecoration.buildInputDecoration('Email', context),
+            decoration:
+                InputFieldDecoration.buildInputDecoration('Email', context),
           ),
           const SizedBox(
             height: 24,
@@ -73,7 +73,46 @@ class _LoginFormState extends State<LoginForm> {
             style: Theme.of(context).textTheme.bodyText1,
             controller: _passwordController,
             keyboardType: TextInputType.text,
-            decoration: InputFieldDecoration.buildInputDecoration('Password', context),
+            obscureText: !_passwordVisible,
+            autocorrect: false,
+            decoration: InputDecoration(
+              errorStyle: const TextStyle(
+                color: Color(0xFFEB5757),
+                fontWeight: FontWeight.bold,
+              ),
+              labelText: 'Password',
+              suffixIcon: IconButton(
+                //splashRadius: 0,
+                icon: Icon(
+                  _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Theme.of(context).primaryColor,
+                ),
+                onPressed: () {
+                  setState(
+                    () {
+                      _passwordVisible = !_passwordVisible;
+                    },
+                  );
+                },
+              ),
+              labelStyle: const TextStyle(
+                color: Colors.white,
+              ),
+              filled: true,
+              fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(
+                  color: Colors.transparent,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
           ),
           const SizedBox(
             height: 16,
@@ -96,9 +135,14 @@ class _LoginFormState extends State<LoginForm> {
                     updateCheck(val);
                   },
                 ),
-                const Text(
-                  'Remember me',
-                  style: TextStyle(color: Colors.white),
+                GestureDetector(
+                  onTap: () {
+                    updateCheck(!checkValue);
+                  },
+                  child: const Text(
+                    'Remember me',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -111,7 +155,8 @@ class _LoginFormState extends State<LoginForm> {
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(
-                    Theme.of(context).primaryColor),
+                  Theme.of(context).primaryColor,
+                ),
                 fixedSize: MaterialStateProperty.all<Size>(
                   Size.fromWidth(MediaQuery.of(context).size.width),
                 ),

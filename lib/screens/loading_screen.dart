@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:job_application_task/models/movie.dart';
 import 'package:job_application_task/services/api_calls.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     String? token = await ApiCallsProvider().getToken();
 
     Future.delayed(
-      const Duration(seconds: 2),
+      const Duration(seconds: 1),
       () async {
         if (token != null) {
           final apiProv = Provider.of<ApiCallsProvider>(context, listen: false);
@@ -38,18 +39,48 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Column(
-        children: [
-          Center(
-            child: isLoading
-                ? CircularProgressIndicator(
-                    color: Theme.of(context).primaryColor,
-                  )
-                : const Text(
-                    'Loading...',
-                  ),
-          ),
-        ],
+      body: SizedBox(
+        height: double.infinity,
+        child: isLoading
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        await prefs.remove('token');
+                        await prefs.remove('tmpToken');
+                        dispose();
+                        Navigator.pushReplacementNamed(context, '/login');
+                      },
+                      child: const Text('Try again'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Theme.of(context).primaryColor,
+                        ),
+                        fixedSize: MaterialStateProperty.all<Size>(
+                          Size.fromWidth(
+                              MediaQuery.of(context).size.width * 0.5),
+                        ),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : const Text(
+                'Loading...',
+              ),
       ),
     );
   }

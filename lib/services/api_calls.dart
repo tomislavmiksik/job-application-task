@@ -73,6 +73,15 @@ class ApiCallsProvider with ChangeNotifier {
       List responseData = response.data['data'];
 
       for (var element in responseData) {
+        if (element['attributes']['poster']['data'] == null) {
+          element['attributes']['poster']['data'] = {
+            'attributes':{
+              'formats': {
+                'thumbnail': {'url': 'https://via.placeholder.com/150/000000/FFFFFF/?text=No+image'}
+              }
+            }
+          };
+        }
         tmpMovies.add(
           Movie(
             id: element['id'],
@@ -84,7 +93,6 @@ class ApiCallsProvider with ChangeNotifier {
         );
       }
       _movies = tmpMovies;
-      print('movies: ' + _movies.toString());
       notifyListeners();
       return _movies;
     } on DioError catch (e) {
@@ -117,7 +125,6 @@ class ApiCallsProvider with ChangeNotifier {
           headers: {'Authorization': 'Bearer $token'},
         ),
       );
-      //response.data['data'];
       fetchMovies();
       _movies.add(Movie(
         id: response.data['data']['id'],
@@ -130,7 +137,6 @@ class ApiCallsProvider with ChangeNotifier {
       print(e.response!.data.toString());
       rethrow;
     }
-
   }
 
   Future<void> editMovie(
@@ -158,13 +164,11 @@ class ApiCallsProvider with ChangeNotifier {
   }
 
   List<Movie> get getMovies {
-    print('movies u getteru ' + _movies.toString());
     return [..._movies];
   }
 
   //find movie by id
   Movie findMovieById(int id) {
-    //print(getMovies);
     return getMovies.firstWhere((element) => element.id == id);
   }
 }

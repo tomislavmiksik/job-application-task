@@ -7,8 +7,9 @@ class EmptyListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        height: 300,
+        //height: double.infinity,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 16),
             Text(
