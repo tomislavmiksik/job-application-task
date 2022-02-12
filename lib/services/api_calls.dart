@@ -7,7 +7,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/movie.dart';
-import '../screens/home_screen.dart';
 
 class ApiCallsProvider with ChangeNotifier {
   final String baseUrl = 'https://zm-movies-assignment.herokuapp.com';
@@ -81,9 +80,8 @@ class ApiCallsProvider with ChangeNotifier {
     }
   }
 
-  Future<List<Movie>> fetchMovies() async {
+  Future<void> fetchMovies() async {
     List<Movie> tmpMovies = [];
-    //var tmpToken = await getToken();
     token = (await getToken()).toString();
 
     try {
@@ -110,7 +108,6 @@ class ApiCallsProvider with ChangeNotifier {
           };
         }
         String imgUrl;
-        var tempDir = await getTemporaryDirectory();
 
         if (element['attributes']['poster']['data']['attributes']['formats']
                 ['small'] !=
@@ -122,30 +119,17 @@ class ApiCallsProvider with ChangeNotifier {
               ['formats']['thumbnail']['url'];
         }
 
-        String fullPath = tempDir.path +
-            '/' +
-            element['attributes']['name'] +
-            "." +
-            imgUrl.split('.').last;
-        print('full path $fullPath');
-
-        downloadPoster(
-          imgUrl,
-          fullPath,
-        );
-
         tmpMovies.add(
           Movie(
             id: element['id'],
             title: element['attributes']['name'],
             year: element['attributes']['publicationYear'],
-            posterUrl: fullPath,
+            posterUrl: imgUrl,
           ),
         );
       }
       _movies = tmpMovies;
       notifyListeners();
-      return _movies;
     } on DioError catch (e) {
       //print(e.response!.statusMessage.toString());
       //print(e.response!.statusCode.toString());
@@ -155,7 +139,6 @@ class ApiCallsProvider with ChangeNotifier {
 
   Future<void> addMovie(String title, int year, String filePath) async {
     token = (await getToken()).toString();
-    print('token u addMovie: ' + token);
 
     var data = {
       'name': title,
@@ -201,13 +184,25 @@ class ApiCallsProvider with ChangeNotifier {
       'publicationYear': year,
     };
 
-    print(filePath);
+    var tempDir = await getTemporaryDirectory();
 
+    String fullPath =
+        tempDir.path + '/' + title + "." + filePath.split('.').last;
+    print('full path $fullPath');
+    print('filePath : ' + filePath);
+
+    /* if (filePath.startsWith('http')) {
+      downloadPoster(
+        filePath,
+        fullPath,
+      );
+    } */
     var formData = FormData.fromMap(
       {
         'data': jsonEncode(data),
-        'files.poster': await MultipartFile.fromFile(filePath,
-            filename: '${DateTime.now().millisecondsSinceEpoch}.jpg'),
+        'files.poster': await MultipartFile.fromFile(
+          filePath,
+          filename: '${DateTime.now().millisecondsSinceEpoch}.jpg'),
       },
     );
 
@@ -219,7 +214,7 @@ class ApiCallsProvider with ChangeNotifier {
           headers: {'Authorization': 'Bearer $token'},
         ),
       );
-      _movies.firstWhere((element) => element.id == id).editMovie(id, title, year, filePath);
+      final index = _movies.indexWhere((element) => element.id == id);
       //fetchMovies();
       notifyListeners();
     } on DioError catch (e) {

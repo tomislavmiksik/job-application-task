@@ -36,6 +36,7 @@ class _LoginFormState extends State<LoginForm> {
       try {
         await ApiCallsProvider()
             .login(_emailController.text, _passwordController.text, checkValue);
+        await ApiCallsProvider().fetchMovies();
         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       } catch (error) {
         showDialog(context: context, builder: (ctx) => const ErrorDialog());

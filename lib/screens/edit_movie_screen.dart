@@ -1,5 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:job_application_task/shared/input_field_decoration.dart';
 import 'package:provider/provider.dart';
@@ -34,17 +35,16 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
     final movieId = routeArgs['id'];
     final isEdit = routeArgs['isEdit'];
 
-    if(movieId == null || movieId == 0) {
+    if (movieId == null || movieId == 0) {
       return;
     }
 
     movie = apiProv.findMovieById(movieId.toInt());
     super.didChangeDependencies();
   }
+
   @override
-  void initState() {
-    
-  }
+  void initState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,18 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
               ),
         centerTitle: true,
       ),
-      body: EditAddForm(movie),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          EditAddForm(movie),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: SvgPicture.asset(
+              'assets/images/Vectors.svg',
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

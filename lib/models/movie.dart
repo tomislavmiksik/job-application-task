@@ -14,12 +14,10 @@ class Movie with ChangeNotifier {
   });
 
   void editMovie(
-    int? id,
     String? title,
     int? year,
     String? posterUrl,
   ) {
-    this.id = id;
     this.title = title;
     this.year = year;
     this.posterUrl = posterUrl;

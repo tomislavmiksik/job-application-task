@@ -27,7 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     //final Future<void> fetchedMovies = ApiCallsProvider().fetchMovies();
     apiProv = Provider.of<ApiCallsProvider>(context);
-
+  
+    apiProv.fetchMovies();
     return Scaffold(
         floatingActionButton: apiProv.getMovies.isEmpty
             ? FloatingActionButton(
@@ -49,9 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Theme.of(context).backgroundColor,
         ),
         body: apiProv.getMovies.isEmpty
-            ? const SingleChildScrollView(
-                child: EmptyListWidget(),
-              )
+            ? const EmptyListWidget()
             : Column(
                 children: [
                   Row(

@@ -74,8 +74,8 @@ class MovieTile extends StatelessWidget {
               Center(
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.15,
-                  child: ExtendedImage.file(
-                    File(movie.posterUrl.toString()),
+                  child: ExtendedImage.network(
+                    movie.posterUrl.toString(),
                     fit: BoxFit.cover,
                     //cache: true,
                     width: double.infinity,

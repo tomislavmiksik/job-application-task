@@ -14,7 +14,7 @@ class MovieGrid extends StatelessWidget {
       itemCount: movies.length,
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
         value: movies[index],
-        child: MovieTile(),
+        child: const MovieTile(),
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,

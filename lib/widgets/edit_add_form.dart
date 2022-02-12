@@ -28,7 +28,7 @@ class _EditAddFormState extends State<EditAddForm> {
     _form.currentState?.save();
 
     final apiProv = Provider.of<ApiCallsProvider>(context, listen: false);
-
+    //TODO: fix image upload
     if (widget.movie.id != null) {
       apiProv.editMovie(
         widget.movie.id!.toInt(),
@@ -38,7 +38,7 @@ class _EditAddFormState extends State<EditAddForm> {
       );
     } else {
       apiProv.addMovie(_titleController.text, int.parse(_yearController.text),
-          widget.movie.posterUrl.toString());
+          imagePath.toString());
     }
     Navigator.of(context).pop();
   }
@@ -49,15 +49,13 @@ class _EditAddFormState extends State<EditAddForm> {
         ModalRoute.of(context)?.settings.arguments as Map<String, int?>;
     final apiProv = Provider.of<ApiCallsProvider>(context, listen: false);
     final movieId = routeArgs['id'];
-    final isEdit = routeArgs['isEdit'];
-
+    
     if (movieId == null || movieId == 0) {
       return;
     }
     print(movieId);
 
     widget.movie = apiProv.findMovieById(movieId.toInt());
-    image = XFile(widget.movie.posterUrl.toString());
     _titleController.text = widget.movie.title.toString();
     _yearController.text = widget.movie.year.toString();
 
@@ -68,17 +66,17 @@ class _EditAddFormState extends State<EditAddForm> {
   void initState() {
     imagePath = widget.movie.posterUrl;
     super.initState();
-    
   }
-  
+
   Future<void> selectImage() async {
     XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
 
-    setState(() {
-      imagePath = pickedImage?.path;
-      widget.movie.posterUrl = pickedImage?.path;
-      image = XFile(widget.movie.posterUrl.toString());
-    });
+    setState(
+      () {
+        imagePath = pickedImage?.path;
+        image = pickedImage;
+      },
+    );
   }
 
   @override
@@ -123,19 +121,29 @@ class _EditAddFormState extends State<EditAddForm> {
                       ),
                     ),
                     height: 400,
-                    child: image == null
+                    child: image == null && widget.movie.posterUrl == ''
                         ? const Center(
                             child: Text('Add an image'),
                           )
-                        : ClipRRect(
-                            clipBehavior: Clip.hardEdge,
-                            borderRadius: BorderRadius.circular(8),
-                            child: ExtendedImage.file(
-                              File(widget.movie.posterUrl.toString()),
-                              fit: BoxFit.fitWidth,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
+                        : image != null
+                            ? ClipRRect(
+                                clipBehavior: Clip.hardEdge,
+                                borderRadius: BorderRadius.circular(8),
+                                child: ExtendedImage.file(
+                                  File(imagePath!),
+                                  fit: BoxFit.fitWidth,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              )
+                            : ClipRRect(
+                                clipBehavior: Clip.hardEdge,
+                                borderRadius: BorderRadius.circular(8),
+                                child: ExtendedImage.network(
+                                  widget.movie.posterUrl.toString(),
+                                  fit: BoxFit.fitWidth,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
                   ),
                 ),
                 Row(

@@ -50,7 +50,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                       color: Theme.of(context).primaryColor,
                     ),
                     const SizedBox(height: 10),
-                    ElevatedButton(
+                    /*  ElevatedButton(
                       onPressed: () async {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
@@ -74,7 +74,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                           ),
                         ),
                       ),
-                    ),
+                    ), */
                   ],
                 ),
               )
