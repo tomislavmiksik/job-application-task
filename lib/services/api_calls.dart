@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/movie.dart';
@@ -57,6 +59,28 @@ class ApiCallsProvider with ChangeNotifier {
     await prefs.remove('token');
   }
 
+  Future downloadPoster(String url, String savePath) async {
+    try {
+      Response response = await Dio().get(
+        url, //Received data with List<int>
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
+      );
+      //print(response.headers);
+      File file = File(savePath);
+      var raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(response.data);
+      await raf.close();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<List<Movie>> fetchMovies() async {
     List<Movie> tmpMovies = [];
     //var tmpToken = await getToken();
@@ -75,20 +99,47 @@ class ApiCallsProvider with ChangeNotifier {
       for (var element in responseData) {
         if (element['attributes']['poster']['data'] == null) {
           element['attributes']['poster']['data'] = {
-            'attributes':{
+            'attributes': {
               'formats': {
-                'thumbnail': {'url': 'https://via.placeholder.com/150/000000/FFFFFF/?text=No+image'}
+                'thumbnail': {
+                  'url':
+                      'https://via.placeholder.com/150/000000/FFFFFF/?text=No+image'
+                }
               }
             }
           };
         }
+        String imgUrl;
+        var tempDir = await getTemporaryDirectory();
+
+        if (element['attributes']['poster']['data']['attributes']['formats']
+                ['small'] !=
+            null) {
+          imgUrl = element['attributes']['poster']['data']['attributes']
+              ['formats']['small']['url'];
+        } else {
+          imgUrl = element['attributes']['poster']['data']['attributes']
+              ['formats']['thumbnail']['url'];
+        }
+
+        String fullPath = tempDir.path +
+            '/' +
+            element['attributes']['name'] +
+            "." +
+            imgUrl.split('.').last;
+        print('full path $fullPath');
+
+        downloadPoster(
+          imgUrl,
+          fullPath,
+        );
+
         tmpMovies.add(
           Movie(
             id: element['id'],
             title: element['attributes']['name'],
             year: element['attributes']['publicationYear'],
-            posterUrl: element['attributes']['poster']['data']['attributes']
-                ['formats']['thumbnail']['url'],
+            posterUrl: fullPath,
           ),
         );
       }
@@ -96,8 +147,8 @@ class ApiCallsProvider with ChangeNotifier {
       notifyListeners();
       return _movies;
     } on DioError catch (e) {
-      print(e.response!.statusMessage.toString());
-      print(e.response!.statusCode.toString());
+      //print(e.response!.statusMessage.toString());
+      //print(e.response!.statusCode.toString());
       rethrow;
     }
   }
@@ -111,11 +162,13 @@ class ApiCallsProvider with ChangeNotifier {
       'publicationYear': year,
     };
 
-    var formData = FormData.fromMap({
-      'data': jsonEncode(data),
-      'files.poster': await MultipartFile.fromFile(filePath,
-          filename: '${DateTime.now().millisecondsSinceEpoch}.jpg'),
-    });
+    var formData = FormData.fromMap(
+      {
+        'data': jsonEncode(data),
+        'files.poster': await MultipartFile.fromFile(filePath,
+            filename: '${DateTime.now().millisecondsSinceEpoch}.jpg'),
+      },
+    );
 
     try {
       var response = await Dio().post(
@@ -140,7 +193,40 @@ class ApiCallsProvider with ChangeNotifier {
   }
 
   Future<void> editMovie(
-      int id, String title, int year, String filepath) async {}
+      int id, String title, int year, String filePath) async {
+    token = (await getToken()).toString();
+
+    var data = {
+      'name': title,
+      'publicationYear': year,
+    };
+
+    print(filePath);
+
+    var formData = FormData.fromMap(
+      {
+        'data': jsonEncode(data),
+        'files.poster': await MultipartFile.fromFile(filePath,
+            filename: '${DateTime.now().millisecondsSinceEpoch}.jpg'),
+      },
+    );
+
+    try {
+      await Dio().put(
+        baseUrl + '/api/movies/$id',
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+      _movies.firstWhere((element) => element.id == id).editMovie(id, title, year, filePath);
+      //fetchMovies();
+      notifyListeners();
+    } on DioError catch (e) {
+      print(e.response!.data.toString());
+      rethrow;
+    }
+  }
 
   Future<void> deleteMovie(int id) async {
     token = (await getToken()).toString();

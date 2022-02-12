@@ -3,66 +3,63 @@ import 'package:flutter/material.dart';
 import 'package:job_application_task/models/movie.dart';
 import 'package:job_application_task/screens/edit_movie_screen.dart';
 import 'package:job_application_task/services/api_calls.dart';
+import 'package:provider/provider.dart';
 
-class MovieTile extends StatefulWidget {
-  final Movie movie;
-
-  const MovieTile({Key? key, required this.movie}) : super(key: key);
-
-  @override
-  _MovieTileState createState() => _MovieTileState();
-}
-
-class _MovieTileState extends State<MovieTile> {
-  void deleteMovie(int id) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        backgroundColor: Theme.of(context).backgroundColor,
-        title: const Text('Are you sure?'),
-        content: const Text(
-          'Do you want to delete this movie permanently?',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          MaterialButton(
-            child: const Text(
-              'No',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            //color: Theme.of(context).errorColor,
-            onPressed: () => Navigator.of(context).pop(false),
-          ),
-          MaterialButton(
-            //color: Theme.of(context).primaryColor,
-
-            child: Text(
-              'Yes',
-              style: TextStyle(color: Theme.of(context).errorColor),
-            ),
-            onPressed: () async {
-              await ApiCallsProvider().deleteMovie(id);
-              ApiCallsProvider().fetchMovies();
-              Navigator.of(ctx).pop(true);
-            },
-          ),
-        ],
-      ),
-    );
-  }
+class MovieTile extends StatelessWidget {
+  const MovieTile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    final Movie movie = Provider.of<Movie>(context);
+
+    void deleteMovie(int id) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: const Text('Are you sure?'),
+          content: const Text(
+            'Do you want to delete this movie permanently?',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          actions: [
+            MaterialButton(
+              child: const Text(
+                'No',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              //color: Theme.of(context).errorColor,
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+            MaterialButton(
+              //color: Theme.of(context).primaryColor,
+
+              child: Text(
+                'Yes',
+                style: TextStyle(color: Theme.of(context).errorColor),
+              ),
+              onPressed: () async {
+                await ApiCallsProvider().deleteMovie(id);
+                ApiCallsProvider().fetchMovies();
+                Navigator.of(ctx).pop(true);
+              },
+            ),
+          ],
+        ),
+      );
+    }
+
     return Container(
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -77,10 +74,10 @@ class _MovieTileState extends State<MovieTile> {
               Center(
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.15,
-                  child: ExtendedImage.network(
-                    widget.movie.posterUrl.toString(),
+                  child: ExtendedImage.file(
+                    File(movie.posterUrl.toString()),
                     fit: BoxFit.cover,
-                    cache: true,
+                    //cache: true,
                     width: double.infinity,
                     enableMemoryCache: true,
                     shape: BoxShape.rectangle,
@@ -107,12 +104,10 @@ class _MovieTileState extends State<MovieTile> {
                     value == 1
                         ? Navigator.of(context).pushNamed(
                             EditMovieScreen.routeName,
-                            arguments: {
-                              'id': widget.movie.id,
-                            },
+                            arguments: {'id': movie.id, 'isEdit': 1},
                           )
                         : deleteMovie(
-                            widget.movie.id!.toInt(),
+                            movie.id!.toInt(),
                           );
                   },
                   itemBuilder: (context) {
@@ -141,7 +136,7 @@ class _MovieTileState extends State<MovieTile> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
-              widget.movie.title.toString(),
+              movie.title.toString(),
               textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.headline6,
             ),
@@ -150,7 +145,7 @@ class _MovieTileState extends State<MovieTile> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
-              widget.movie.year.toString(),
+              movie.year.toString(),
               textAlign: TextAlign.left,
               style: Theme.of(context).textTheme.bodySmall,
             ),

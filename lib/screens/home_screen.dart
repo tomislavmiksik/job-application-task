@@ -24,141 +24,106 @@ class _HomeScreenState extends State<HomeScreen> {
   var apiProv;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
-  void initState() {
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final Future<void> fetchedMovies = ApiCallsProvider().fetchMovies();
+    //final Future<void> fetchedMovies = ApiCallsProvider().fetchMovies();
     apiProv = Provider.of<ApiCallsProvider>(context);
+
     return Scaffold(
-      floatingActionButton: apiProv.getMovies.isEmpty
-          ? FloatingActionButton(
-              backgroundColor: Theme.of(context).primaryColor,
-              onPressed: () async {
-                apiProv.fetchMovies();
-                setState(
-                  () {
-                    _movies = apiProv.getMovies;
-                  },
-                );
-              },
-              child: const Icon(Icons.refresh),
-            )
-          : null,
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        shadowColor: Colors.transparent,
+        floatingActionButton: apiProv.getMovies.isEmpty
+            ? FloatingActionButton(
+                backgroundColor: Theme.of(context).primaryColor,
+                onPressed: () async {
+                  apiProv.fetchMovies();
+                  setState(
+                    () {
+                      _movies = apiProv.getMovies;
+                    },
+                  );
+                },
+                child: const Icon(Icons.refresh),
+              )
+            : null,
         backgroundColor: Theme.of(context).backgroundColor,
-      ),
-      body: FutureBuilder(
-        future: fetchedMovies,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return apiProv.getMovies.isEmpty
-                ? const SingleChildScrollView(
-                    child: EmptyListWidget(),
-                  )
-                : SingleChildScrollView(
-                    child: RefreshIndicator(
-                      backgroundColor: Theme.of(context).backgroundColor,
-                      color: Theme.of(context).primaryColor,
-                      onRefresh: () async {
-                        apiProv.fetchMovies();
-                        setState(
-                          () {
-                            _movies = apiProv.getMovies;
-                          },
-                        );
-                      },
-                      child: Column(
+        appBar: AppBar(
+          shadowColor: Colors.transparent,
+          backgroundColor: Theme.of(context).backgroundColor,
+        ),
+        body: apiProv.getMovies.isEmpty
+            ? const SingleChildScrollView(
+                child: EmptyListWidget(),
+              )
+            : Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      'My Movies',
-                                      style:
-                                          Theme.of(context).textTheme.headline3,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const FaIcon(
-                                      FontAwesomeIcons.plusCircle,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/edit-movie',
-                                        arguments: {'id': 0},
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              IconButton(
-                                icon: const FaIcon(
-                                  FontAwesomeIcons.signOutAlt,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  ApiCallsProvider().logout();
-                                  Navigator.of(
-                                    context,
-                                  ).pushReplacementNamed('/login');
-                                },
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.7,
-                            child: MovieGrid(
-                              snapshot.data! as List<Movie>,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              'My Movies',
+                              style: Theme.of(context).textTheme.headline3,
                             ),
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: SvgPicture.asset(
-                              'assets/images/Vectors.svg',
+                          IconButton(
+                            icon: const FaIcon(
+                              FontAwesomeIcons.plusCircle,
+                              color: Colors.white,
+                              size: 20,
                             ),
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                '/edit-movie',
+                                arguments: {'id': 0},
+                              );
+                            },
                           ),
                         ],
                       ),
+                      IconButton(
+                        icon: const FaIcon(
+                          FontAwesomeIcons.signOutAlt,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          ApiCallsProvider().logout();
+                          Navigator.of(
+                            context,
+                          ).pushReplacementNamed('/login');
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  RefreshIndicator(
+                    backgroundColor: Theme.of(context).backgroundColor,
+                    color: Theme.of(context).primaryColor,
+                    onRefresh: () async {
+                      apiProv.fetchMovies();
+                      setState(
+                        () {
+                          _movies = apiProv.getMovies;
+                        },
+                      );
+                    },
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.82,
+                      child: MovieGrid(
+                        apiProv.getMovies,
+                      ),
                     ),
-                  );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                '${snapshot.error}',
-                style: const TextStyle(
-                  color: Colors.red,
-                  fontSize: 20,
-                ),
-              ),
-            );
-          }
-          return Center(
+                  ),
+                ],
+              )
+        /* return Center(
             child: CircularProgressIndicator(
               color: Theme.of(context).primaryColor,
             ),
-          );
-        },
-      ),
-    );
+          ); */
+
+        );
   }
 }

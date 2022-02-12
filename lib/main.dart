@@ -15,7 +15,7 @@ void main() async {
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  await prefs.remove('token');
+  await prefs.remove('tmpToken');
 
   //flushat 'token' kad se builda aplikacija inace sranje bude jer ostane token spremljen od prosle verzije
   //

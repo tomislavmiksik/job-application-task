@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_application_task/models/movie.dart';
 import 'package:job_application_task/widgets/movie_tile.dart';
+import 'package:provider/provider.dart';
 
 class MovieGrid extends StatelessWidget {
   final List<Movie> movies;
@@ -11,9 +12,10 @@ class MovieGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       itemCount: movies.length,
-      itemBuilder: (context, index) {
-        return MovieTile(movie: movies[index]);
-      },
+      itemBuilder: (context, index) => ChangeNotifierProvider.value(
+        value: movies[index],
+        child: MovieTile(),
+      ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 2.5 / 3,
