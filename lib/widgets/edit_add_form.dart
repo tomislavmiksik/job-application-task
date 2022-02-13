@@ -49,7 +49,7 @@ class _EditAddFormState extends State<EditAddForm> {
         ModalRoute.of(context)?.settings.arguments as Map<String, int?>;
     final apiProv = Provider.of<ApiCallsProvider>(context, listen: false);
     final movieId = routeArgs['id'];
-    
+
     if (movieId == null || movieId == 0) {
       return;
     }
@@ -81,106 +81,114 @@ class _EditAddFormState extends State<EditAddForm> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Form(
-            child: Column(
-              children: [
-                TextFormField(
-                  cursorColor: Theme.of(context).primaryColor,
-                  textInputAction: TextInputAction.next,
-                  style: Theme.of(context).textTheme.bodyText1,
-                  controller: _titleController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputFieldDecoration.buildInputDecoration(
-                      'Movie title', context),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  cursorColor: Theme.of(context).primaryColor,
-                  textInputAction: TextInputAction.next,
-                  style: Theme.of(context).textTheme.bodyText1,
-                  controller: _yearController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputFieldDecoration.buildInputDecoration(
-                      'Year of release', context),
-                ),
-                const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () => selectImage(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Theme.of(context).primaryColor,
-                        style: BorderStyle.solid,
-                        width: 2,
-                      ),
-                    ),
-                    height: 400,
-                    child: image == null && widget.movie.posterUrl == ''
-                        ? const Center(
-                            child: Text('Add an image'),
-                          )
-                        : image != null
-                            ? ClipRRect(
-                                clipBehavior: Clip.hardEdge,
-                                borderRadius: BorderRadius.circular(8),
-                                child: ExtendedImage.file(
-                                  File(imagePath!),
-                                  fit: BoxFit.fitWidth,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              )
-                            : ClipRRect(
-                                clipBehavior: Clip.hardEdge,
-                                borderRadius: BorderRadius.circular(8),
-                                child: ExtendedImage.network(
-                                  widget.movie.posterUrl.toString(),
-                                  fit: BoxFit.fitWidth,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Form(
+              child: Column(
+                children: [
+                  TextFormField(
+                    cursorColor: Theme.of(context).primaryColor,
+                    textInputAction: TextInputAction.next,
+                    style: Theme.of(context).textTheme.bodyText1,
+                    controller: _titleController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputFieldDecoration.buildInputDecoration(
+                        'Movie title', context),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        //color: Theme.of(context).primaryColor,
-                        onPressed: () => _submitForm(),
-                        child: const Text(
-                          'Save',
-                          style: TextStyle(
-                            color: Colors.white,
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    cursorColor: Theme.of(context).primaryColor,
+                    textInputAction: TextInputAction.next,
+                    style: Theme.of(context).textTheme.bodyText1,
+                    controller: _yearController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputFieldDecoration.buildInputDecoration(
+                        'Year of release', context),
+                  ),
+                  const SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () => selectImage(),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: Theme.of(context).primaryColor,
+                          style: BorderStyle.solid,
+                          width: 2,
+                        ),
+                      ),
+                      height: 400,
+                      child: image == null && widget.movie.posterUrl == ''
+                          ? const Center(
+                              child: Text('Add an image'),
+                            )
+                          : image != null
+                              ? ClipRRect(
+                                  clipBehavior: Clip.hardEdge,
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: ExtendedImage.file(
+                                    File(imagePath!),
+                                    fit: BoxFit.fitWidth,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                )
+                              : ClipRRect(
+                                  clipBehavior: Clip.hardEdge,
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: ExtendedImage.network(
+                                    widget.movie.posterUrl.toString(),
+                                    fit: BoxFit.fitWidth,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          //color: Theme.of(context).primaryColor,
+                          onPressed: () => _submitForm(),
+                          child: const Text(
+                            'Save',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: ElevatedButton(
-                        //color: Theme.of(context).primaryColor,
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text(
-                          'Cancel',
-                          style: TextStyle(
-                            color: Colors.white,
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: ElevatedButton(
+                          //color: Theme.of(context).primaryColor,
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                            Theme.of(context).errorColor,
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).errorColor,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                )
-              ],
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
