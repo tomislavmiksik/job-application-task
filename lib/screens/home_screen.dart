@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:job_application_task/models/movie.dart';
 import 'package:job_application_task/services/api_calls.dart';
 import 'package:job_application_task/widgets/empty_list.dart';
 import 'package:job_application_task/widgets/movie_grid.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
-                              'My Movies',
+                              AppLocalizations.of(context)!.myMovies,
                               style: Theme.of(context).textTheme.headline3,
                             ),
                           ),

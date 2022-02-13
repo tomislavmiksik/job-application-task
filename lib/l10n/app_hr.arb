@@ -1,0 +1,20 @@
+{
+    "myMovies": "Moji filmovi",
+    "editMovieAppBarTitle": "Uredi film",
+    "editMovieTitle": "Naslov",
+    "editMovie": "Uredi",
+    "deleteMovie": "Izbriši",
+    "confirmationDelete": "Da li ste sigurni?",
+    "editMovieYear": "Godina",
+    "editMovieImage": "Dodajte sliku",
+    "editMovieSave": "Spremi",
+    "editMovieCancel": "Odustani",
+    "editMovieAddMovie": "Dodaj film",
+    "signIn": "Prijava",
+    "password": "Lozinka",
+    "rememberMe": "Zapamti me",
+    "signInButton": "Prijavite se",
+    "deleteWarning": "Da li ste sigurni da želite izbrisati ovaj film?",
+    "no": "Ne",
+    "yes": "Da"
+}

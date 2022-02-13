@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:job_application_task/models/movie.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../services/api_calls.dart';
 import '../shared/input_field_decoration.dart';
 
@@ -102,7 +102,9 @@ class _EditAddFormState extends State<EditAddForm> {
                     controller: _titleController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputFieldDecoration.buildInputDecoration(
-                        'Movie title', context),
+                      AppLocalizations.of(context)!.editMovieTitle,
+                      context,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -112,9 +114,14 @@ class _EditAddFormState extends State<EditAddForm> {
                     controller: _yearController,
                     keyboardType: TextInputType.number,
                     decoration: InputFieldDecoration.buildInputDecoration(
-                        'Year of release', context),
+                      AppLocalizations.of(context)!.editMovieYear,
+                      context,
+                    ),
                   ),
                   const SizedBox(height: 20),
+
+                  //image selection
+                  //
                   GestureDetector(
                     onTap: () => selectImage(),
                     child: Container(
@@ -126,10 +133,10 @@ class _EditAddFormState extends State<EditAddForm> {
                           width: 2,
                         ),
                       ),
-                      height: 400,
+                      height: 380,
                       child: image == null && widget.movie.posterUrl == ''
-                          ? const Center(
-                              child: Text('Add an image'),
+                          ? Center(
+                              child: Text(AppLocalizations.of(context)!.editMovieImage),
                             )
                           : image != null
                               ? ClipRRect(
@@ -152,35 +159,42 @@ class _EditAddFormState extends State<EditAddForm> {
                                 ),
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  //buttons row
+                  //
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: ElevatedButton(
-                          //color: Theme.of(context).primaryColor,
-                          onPressed: () => _submitForm(),
-                          child: const Text(
-                            'Save',
-                            style: TextStyle(
-                              color: Colors.white,
+                        child: SizedBox(
+                          height: 40,
+                          child: ElevatedButton(
+                            onPressed: () => _submitForm(),
+                            child: Text(
+                              AppLocalizations.of(context)!.editMovieSave,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
                       const SizedBox(width: 20),
                       Expanded(
-                        child: ElevatedButton(
-                          //color: Theme.of(context).primaryColor,
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(
-                              color: Colors.white,
+                        child: SizedBox(
+                          height: 40,
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text(
+                              AppLocalizations.of(context)!.editMovieCancel,
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                              Theme.of(context).errorColor,
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                Theme.of(context).errorColor,
+                              ),
                             ),
                           ),
                         ),

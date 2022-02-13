@@ -1,0 +1,27 @@
+{
+    "helloWorld": "Hello World!",
+    "@helloWorld": {
+      "description": "The conventional newborn programmer greeting"
+    },
+    "myMovies":"My Movies",
+    "@myMovies": {
+      "description": "The title of the page that shows the user's movies"
+    },
+    "editMovieAppBarTitle": "Edit Movie",
+    "editMovieTitle": "Title",
+    "editMovie": "Edit",
+    "deleteMovie": "Delete",
+    "confirmationDelete": "Are you sure?",
+    "editMovieYear": "Year of release",
+    "editMovieImage": "Add an image",
+    "editMovieSave": "Save",
+    "editMovieCancel": "Cancel",
+    "editMovieAddMovie": "Add a movie",
+    "signIn": "Sign in",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "signInButton": "Sign in",
+    "deleteWarning": "Are you sure you want to delete this movie permanently?",
+    "no": "No",
+    "yes": "Yes"
+}

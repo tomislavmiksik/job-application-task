@@ -7,6 +7,7 @@ import 'package:job_application_task/screens/login_screen.dart';
 import 'package:job_application_task/services/api_calls.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'constants/default_theme.dart';
 
@@ -37,21 +38,13 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en', ''),
-          Locale('hr', ''),
-          Locale('de', ''),
-        ],
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         title: 'Movie App',
         theme: DefaultTheme().theme,
         routes: {
           '/': (ctx) => const LoadingScreen(),
-          LoginScreen.routeName : (ctx) => const LoginScreen(),
+          LoginScreen.routeName: (ctx) => const LoginScreen(),
           HomeScreen.routeName: (ctx) => const HomeScreen(),
           EditMovieScreen.routeName: (ctx) => const EditMovieScreen(),
         },

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../widgets/login_form.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -31,7 +31,7 @@ class LoginScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        'Sign in',
+                        AppLocalizations.of(context)!.signIn,
                         style: Theme.of(context).textTheme.headline1,
                       ),
                       const SizedBox(height: 16),

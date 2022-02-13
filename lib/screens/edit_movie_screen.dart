@@ -1,10 +1,8 @@
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:job_application_task/shared/input_field_decoration.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../models/movie.dart';
 import '../services/api_calls.dart';
 import '../widgets/edit_add_form.dart';
@@ -55,11 +53,11 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
         backgroundColor: Theme.of(context).backgroundColor,
         title: movie.id == null
             ? Text(
-                'Add a movie',
+                AppLocalizations.of(context)!.editMovieAddMovie,
                 style: Theme.of(context).textTheme.headline3,
               )
             : Text(
-                'Edit Movie',
+                AppLocalizations.of(context)!.editMovieAppBarTitle,
                 style: Theme.of(context).textTheme.headline3,
               ),
         centerTitle: true,

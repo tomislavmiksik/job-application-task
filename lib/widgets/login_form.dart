@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:job_application_task/screens/home_screen.dart';
@@ -81,7 +81,7 @@ class _LoginFormState extends State<LoginForm> {
                 color: Color(0xFFEB5757),
                 fontWeight: FontWeight.bold,
               ),
-              labelText: 'Password',
+              labelText: AppLocalizations.of(context)!.password,
               suffixIcon: IconButton(
                 splashColor: Colors.transparent,
                 //splashRadius: 0,
@@ -141,9 +141,9 @@ class _LoginFormState extends State<LoginForm> {
                   onTap: () {
                     updateCheck(!checkValue);
                   },
-                  child: const Text(
-                    'Remember me',
-                    style: TextStyle(color: Colors.white),
+                  child: Text(
+                    AppLocalizations.of(context)!.rememberMe,
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ],
@@ -168,7 +168,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
               ),
-              child: const Text('Login'),
+              child: Text(AppLocalizations.of(context)!.signInButton),
               onPressed: () {
                 submitForm();
               },

@@ -4,6 +4,7 @@ import 'package:job_application_task/models/movie.dart';
 import 'package:job_application_task/screens/edit_movie_screen.dart';
 import 'package:job_application_task/services/api_calls.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MovieTile extends StatelessWidget {
   const MovieTile({Key? key}) : super(key: key);
@@ -21,18 +22,18 @@ class MovieTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           backgroundColor: Theme.of(context).backgroundColor,
-          title: const Text('Are you sure?'),
-          content: const Text(
-            'Do you want to delete this movie permanently?',
-            style: TextStyle(
+          title: Text(AppLocalizations.of(context)!.confirmationDelete),
+          content: Text(
+            AppLocalizations.of(context)!.deleteWarning,
+            style: const TextStyle(
               color: Colors.white,
             ),
           ),
           actions: [
             MaterialButton(
-              child: const Text(
-                'No',
-                style: TextStyle(
+              child:  Text(
+                AppLocalizations.of(context)!.no,
+                style: const TextStyle(
                   color: Colors.white,
                 ),
               ),
@@ -46,7 +47,7 @@ class MovieTile extends StatelessWidget {
               //color: Theme.of(context).primaryColor,
 
               child: Text(
-                'Yes',
+                AppLocalizations.of(context)!.yes,
                 style: TextStyle(color: Theme.of(context).errorColor),
               ),
               onPressed: () async {
@@ -115,14 +116,14 @@ class MovieTile extends StatelessWidget {
                       PopupMenuItem(
                         value: 1,
                         child: Text(
-                          'Edit',
+                          AppLocalizations.of(context)!.editMovie,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                       PopupMenuItem(
                         value: 2,
                         child: Text(
-                          'Delete',
+                          AppLocalizations.of(context)!.deleteMovie,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
