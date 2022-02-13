@@ -45,14 +45,14 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             : null,
         backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(
-          shadowColor: Colors.transparent,
-          backgroundColor: Theme.of(context).backgroundColor,
-        ),
         body: apiProv.getMovies.isEmpty
             ? const EmptyListWidget()
             : Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  //const SizedBox(height: 20),
                   RefreshIndicator(
                     backgroundColor: Theme.of(context).backgroundColor,
                     color: Theme.of(context).primaryColor,
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.82,
+                      height: MediaQuery.of(context).size.height * 0.8,
                       child: MovieGrid(
                         apiProv.getMovies,
                       ),

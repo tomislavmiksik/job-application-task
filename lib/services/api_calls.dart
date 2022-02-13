@@ -186,23 +186,24 @@ class ApiCallsProvider with ChangeNotifier {
 
     var tempDir = await getTemporaryDirectory();
 
-    String fullPath =
-        tempDir.path + '/' + title + "." + filePath.split('.').last;
+    String fullPath = filePath;
+        
+
+    if (filePath.startsWith('http')) {
+      fullPath = tempDir.path + '/' + DateTime.now().millisecondsSinceEpoch.toString() + "." + filePath.split('.').last;
     print('full path $fullPath');
     print('filePath : ' + filePath);
-
-    /* if (filePath.startsWith('http')) {
-      downloadPoster(
+      await downloadPoster(
         filePath,
         fullPath,
       );
-    } */
+    } 
+
     var formData = FormData.fromMap(
       {
         'data': jsonEncode(data),
-        'files.poster': await MultipartFile.fromFile(
-          filePath,
-          filename: '${DateTime.now().millisecondsSinceEpoch}.jpg'),
+        'files.poster': await MultipartFile.fromFile(fullPath,
+            filename: '${DateTime.now().millisecondsSinceEpoch}' + filePath.split('.').last),
       },
     );
 

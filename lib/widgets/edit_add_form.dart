@@ -88,7 +88,6 @@ class _EditAddFormState extends State<EditAddForm> {
           child: Form(
             child: Column(
               children: [
-                const SizedBox(height: 40),
                 TextFormField(
                   cursorColor: Theme.of(context).primaryColor,
                   textInputAction: TextInputAction.next,

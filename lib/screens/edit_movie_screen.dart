@@ -48,9 +48,9 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
+
+
+  AppBar appBar = AppBar(
         shadowColor: Colors.transparent,
         backgroundColor: Theme.of(context).backgroundColor,
         title: movie.id == null
@@ -63,18 +63,28 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
                 style: Theme.of(context).textTheme.headline3,
               ),
         centerTitle: true,
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          EditAddForm(movie),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: SvgPicture.asset(
-              'assets/images/Vectors.svg',
-            ),
+      );
+
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: appBar,
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height - appBar.preferredSize.height,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              EditAddForm(movie),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: SvgPicture.asset(
+                  'assets/images/Vectors.svg',
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
