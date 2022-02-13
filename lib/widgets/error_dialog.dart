@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ErrorDialog extends StatelessWidget {
   const ErrorDialog({Key? key}) : super(key: key);
 
@@ -7,15 +7,15 @@ class ErrorDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Theme.of(context).backgroundColor,
-      title: const Text(
-        'Incorrect credentials',
+      title: Text(
+        AppLocalizations.of(context)!.loginError,
         style: TextStyle(
           color: Colors.white,
           fontFamily: 'Montserrat',
         ),
       ),
-      content: const Text(
-        'Please check if you typed the correct email and password',
+      content: Text(
+        AppLocalizations.of(context)!.loginErrorDescription,
         style: TextStyle(
           color: Colors.white,
           fontFamily: 'Montserrat',

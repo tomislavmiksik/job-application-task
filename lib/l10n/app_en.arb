@@ -23,5 +23,7 @@
     "signInButton": "Sign in",
     "deleteWarning": "Are you sure you want to delete this movie permanently?",
     "no": "No",
-    "yes": "Yes"
+    "yes": "Yes",
+    "loginError": "Invalid username or password",
+    "loginErrorDescription": "Please check your username and password and try again"
 }
