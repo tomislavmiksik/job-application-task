@@ -20,11 +20,10 @@ class _EditAddFormState extends State<EditAddForm> {
   final _titleController = TextEditingController();
   final _yearController = TextEditingController();
   String? imagePath = '';
-  XFile? image = null;
+  XFile? image;
   ImagePicker picker = ImagePicker();
 
   void _submitForm() {
-    final isValid = _form.currentState?.validate();
     _form.currentState?.save();
 
     final apiProv = Provider.of<ApiCallsProvider>(context, listen: false);
@@ -53,7 +52,7 @@ class _EditAddFormState extends State<EditAddForm> {
     if (movieId == null || movieId == 0) {
       return;
     }
-    print(movieId);
+    //print(movieId);
 
     widget.movie = apiProv.findMovieById(movieId.toInt());
     _titleController.text = widget.movie.title.toString();

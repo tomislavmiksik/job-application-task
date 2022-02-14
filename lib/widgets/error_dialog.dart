@@ -9,20 +9,23 @@ class ErrorDialog extends StatelessWidget {
       backgroundColor: Theme.of(context).backgroundColor,
       title: Text(
         AppLocalizations.of(context)!.loginError,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontFamily: 'Montserrat',
         ),
       ),
       content: Text(
         AppLocalizations.of(context)!.loginErrorDescription,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontFamily: 'Montserrat',
         ),
       ),
       actions: <Widget>[
         TextButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).backgroundColor),
+          ),
           child: const Text(
             'Ok',
             style: TextStyle(

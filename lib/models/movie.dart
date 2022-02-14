@@ -23,5 +23,4 @@ class Movie with ChangeNotifier {
     this.posterUrl = posterUrl;
     notifyListeners();
   }
-  
 }

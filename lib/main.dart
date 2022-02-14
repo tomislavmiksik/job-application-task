@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:job_application_task/screens/edit_movie_screen.dart';
 import 'package:job_application_task/screens/home_screen.dart';
 import 'package:job_application_task/screens/loading_screen.dart';

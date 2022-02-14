@@ -31,7 +31,6 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
         ModalRoute.of(context)?.settings.arguments as Map<String, int?>;
     final apiProv = Provider.of<ApiCallsProvider>(context, listen: false);
     final movieId = routeArgs['id'];
-    final isEdit = routeArgs['isEdit'];
 
     if (movieId == null || movieId == 0) {
       return;
@@ -40,10 +39,6 @@ class _EditMovieScreenState extends State<EditMovieScreen> {
     movie = apiProv.findMovieById(movieId.toInt());
     super.didChangeDependencies();
   }
-
-  @override
-  void initState() {}
-
   @override
   Widget build(BuildContext context) {
 

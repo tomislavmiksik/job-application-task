@@ -35,6 +35,7 @@ class ApiCallsProvider with ChangeNotifier {
         await prefs.setString('token', token);
       }
     } on DioError catch (e) {
+      //print(e.error);
       rethrow;
     }
     //print('token u loginu ' + token);
@@ -76,7 +77,7 @@ class ApiCallsProvider with ChangeNotifier {
       raf.writeFromSync(response.data);
       await raf.close();
     } catch (e) {
-      print(e);
+      //print(e);
     }
   }
 
@@ -170,7 +171,7 @@ class ApiCallsProvider with ChangeNotifier {
       ));
       notifyListeners();
     } on DioError catch (e) {
-      print(e.response!.data.toString());
+      //print(e.response!.data.toString());
       rethrow;
     }
   }
@@ -191,8 +192,8 @@ class ApiCallsProvider with ChangeNotifier {
 
     if (filePath.startsWith('http')) {
       fullPath = tempDir.path + '/' + DateTime.now().millisecondsSinceEpoch.toString() + "." + filePath.split('.').last;
-    print('full path $fullPath');
-    print('filePath : ' + filePath);
+    //print('full path $fullPath');
+    //print('filePath : ' + filePath);
       await downloadPoster(
         filePath,
         fullPath,
@@ -215,11 +216,10 @@ class ApiCallsProvider with ChangeNotifier {
           headers: {'Authorization': 'Bearer $token'},
         ),
       );
-      final index = _movies.indexWhere((element) => element.id == id);
       //fetchMovies();
       notifyListeners();
     } on DioError catch (e) {
-      print(e.response!.data.toString());
+      //print(e.response!.data.toString());
       rethrow;
     }
   }
@@ -238,7 +238,7 @@ class ApiCallsProvider with ChangeNotifier {
       fetchMovies();
       notifyListeners();
     } on DioError catch (e) {
-      print(e.response!.data.toString());
+      //print(e.response!.data.toString());
       rethrow;
     }
 

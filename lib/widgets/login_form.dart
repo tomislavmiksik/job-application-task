@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:job_application_task/screens/home_screen.dart';
 import 'package:job_application_task/services/api_calls.dart';
@@ -32,15 +30,13 @@ class _LoginFormState extends State<LoginForm> {
 
   submitForm() async {
     //_form.currentState?.save();
-    if (ApiCallsProvider().getToken() != null) {
-      try {
-        await ApiCallsProvider()
-            .login(_emailController.text, _passwordController.text, checkValue);
-        await ApiCallsProvider().fetchMovies();
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-      } catch (error) {
-        showDialog(context: context, builder: (ctx) => const ErrorDialog());
-      }
+    try {
+      await ApiCallsProvider()
+          .login(_emailController.text, _passwordController.text, checkValue);
+      await ApiCallsProvider().fetchMovies();
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    } catch (error) {
+      showDialog(context: context, builder: (ctx) => const ErrorDialog());
     }
   }
 
