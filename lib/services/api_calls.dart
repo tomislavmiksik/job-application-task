@@ -74,7 +74,6 @@ class ApiCallsProvider with ChangeNotifier {
       raf.writeFromSync(response.data);
       await raf.close();
     } catch (e) {
-      //print(e);
     }
   }
 
@@ -238,7 +237,6 @@ class ApiCallsProvider with ChangeNotifier {
     return [..._movies];
   }
 
-  //find movie by id
   Movie findMovieById(int id) {
     return getMovies.firstWhere((element) => element.id == id);
   }
