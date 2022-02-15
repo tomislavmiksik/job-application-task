@@ -45,9 +45,6 @@ class _LoginFormState extends State<LoginForm> {
       key: _form,
       child: Column(
         children: [
-          //email input
-          //
-          //
           TextFormField(
             cursorColor: Theme.of(context).primaryColor,
             textInputAction: TextInputAction.next,
@@ -60,9 +57,6 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(
             height: 24,
           ),
-          //password input
-          //
-          //
           TextFormField(
             cursorColor: Theme.of(context).primaryColor,
             textInputAction: TextInputAction.done,
