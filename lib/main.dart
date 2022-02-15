@@ -17,7 +17,7 @@ void main() async {
 
   await prefs.remove('tmpToken');
 
-  //flushat 'token' kad se builda aplikacija inace sranje bude jer ostane token spremljen od prosle verzije
+  //flushat 'token' kad se builda aplikacija inace sranje bude jer ostane token spremljen od proslog dana/treba cleanat data folder u appu
   //
   //
   //await prefs.remove('token');
