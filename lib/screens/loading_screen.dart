@@ -58,24 +58,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
                       color: Theme.of(context).primaryColor,
                     ),
                     const SizedBox(height: 10),
-                    /*  ElevatedButton(
-                     
-                      child: const Text('Try again'),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).primaryColor,
-                        ),
-                        fixedSize: MaterialStateProperty.all<Size>(
-                          Size.fromWidth(
-                              MediaQuery.of(context).size.width * 0.5),
-                        ),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                    ), */
                   ],
                 ),
               )

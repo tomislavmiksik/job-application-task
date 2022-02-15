@@ -16,18 +16,12 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   await prefs.remove('tmpToken');
-
-  //flushat 'token' kad se builda aplikacija inace sranje bude jer ostane token spremljen od proslog dana/treba cleanat data folder u appu
-  //
-  //
-  //await prefs.remove('token');
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

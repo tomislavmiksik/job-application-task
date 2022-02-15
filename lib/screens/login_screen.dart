@@ -21,7 +21,6 @@ class LoginScreen extends StatelessWidget {
         },
         child: SingleChildScrollView(
           child: SizedBox(
-            //margin: const EdgeInsets.only(top: 200),
             height: MediaQuery.of(context).size.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

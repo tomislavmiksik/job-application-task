@@ -35,10 +35,8 @@ class ApiCallsProvider with ChangeNotifier {
         await prefs.setString('token', token);
       }
     } on DioError catch (e) {
-      //print(e.error);
       rethrow;
     }
-    //print('token u loginu ' + token);
     notifyListeners();
   }
 
@@ -62,7 +60,7 @@ class ApiCallsProvider with ChangeNotifier {
   Future downloadPoster(String url, String savePath) async {
     try {
       Response response = await Dio().get(
-        url, //Received data with List<int>
+        url,
         options: Options(
           responseType: ResponseType.bytes,
           followRedirects: false,
@@ -71,7 +69,6 @@ class ApiCallsProvider with ChangeNotifier {
           },
         ),
       );
-      //print(response.headers);
       File file = File(savePath);
       var raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
@@ -132,8 +129,6 @@ class ApiCallsProvider with ChangeNotifier {
       _movies = tmpMovies;
       notifyListeners();
     } on DioError catch (e) {
-      //print(e.response!.statusMessage.toString());
-      //print(e.response!.statusCode.toString());
       rethrow;
     }
   }
@@ -171,7 +166,6 @@ class ApiCallsProvider with ChangeNotifier {
       ));
       notifyListeners();
     } on DioError catch (e) {
-      //print(e.response!.data.toString());
       rethrow;
     }
   }
@@ -192,8 +186,6 @@ class ApiCallsProvider with ChangeNotifier {
 
     if (filePath.startsWith('http')) {
       fullPath = tempDir.path + '/' + DateTime.now().millisecondsSinceEpoch.toString() + "." + filePath.split('.').last;
-    //print('full path $fullPath');
-    //print('filePath : ' + filePath);
       await downloadPoster(
         filePath,
         fullPath,
@@ -216,10 +208,9 @@ class ApiCallsProvider with ChangeNotifier {
           headers: {'Authorization': 'Bearer $token'},
         ),
       );
-      //fetchMovies();
       notifyListeners();
     } on DioError catch (e) {
-      //print(e.response!.data.toString());
+
       rethrow;
     }
   }
@@ -238,11 +229,9 @@ class ApiCallsProvider with ChangeNotifier {
       fetchMovies();
       notifyListeners();
     } on DioError catch (e) {
-      //print(e.response!.data.toString());
       rethrow;
     }
 
-    //fetchMovies();
   }
 
   List<Movie> get getMovies {

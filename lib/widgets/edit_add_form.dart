@@ -27,7 +27,6 @@ class _EditAddFormState extends State<EditAddForm> {
     _form.currentState?.save();
 
     final apiProv = Provider.of<ApiCallsProvider>(context, listen: false);
-    //TODO: fix image upload
     if (widget.movie.id != null) {
       apiProv.editMovie(
         widget.movie.id!.toInt(),
@@ -52,8 +51,6 @@ class _EditAddFormState extends State<EditAddForm> {
     if (movieId == null || movieId == 0) {
       return;
     }
-    //print(movieId);
-
     widget.movie = apiProv.findMovieById(movieId.toInt());
     _titleController.text = widget.movie.title.toString();
     _yearController.text = widget.movie.year.toString();
@@ -135,7 +132,8 @@ class _EditAddFormState extends State<EditAddForm> {
                       height: 380,
                       child: image == null && widget.movie.posterUrl == ''
                           ? Center(
-                              child: Text(AppLocalizations.of(context)!.editMovieImage),
+                              child: Text(
+                                  AppLocalizations.of(context)!.editMovieImage),
                             )
                           : image != null
                               ? ClipRRect(
@@ -199,7 +197,7 @@ class _EditAddFormState extends State<EditAddForm> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

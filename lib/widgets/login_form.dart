@@ -29,7 +29,6 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   submitForm() async {
-    //_form.currentState?.save();
     try {
       await ApiCallsProvider()
           .login(_emailController.text, _passwordController.text, checkValue);

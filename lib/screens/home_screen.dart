@@ -20,7 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //final Future<void> fetchedMovies = ApiCallsProvider().fetchMovies();
     apiProv = Provider.of<ApiCallsProvider>(context);
 
     apiProv.fetchMovies();

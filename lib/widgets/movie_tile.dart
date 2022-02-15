@@ -40,12 +40,9 @@ class MovieTile extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
-              //color: Theme.of(context).errorColor,
               onPressed: () => Navigator.of(context).pop(false),
             ),
             MaterialButton(
-              //color: Theme.of(context).primaryColor,
-
               child: Text(
                 AppLocalizations.of(context)!.yes,
                 style: TextStyle(color: Theme.of(context).errorColor),
