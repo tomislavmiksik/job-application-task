@@ -91,7 +91,7 @@ class ApiCallsProvider with ChangeNotifier {
 
       List responseData = response.data['data'];
 
-      for (var element in responseData) {
+      for (final element in responseData) {
         if (element['attributes']['poster']['data'] == null) {
           element['attributes']['poster']['data'] = {
             'attributes': {
