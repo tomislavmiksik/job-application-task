@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class Movie with ChangeNotifier {
+class Movie {
   int? id;
   String? title;
   int? year;
