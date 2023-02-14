@@ -12,15 +12,4 @@ class Movie {
     this.year,
     this.posterUrl,
   });
-
-  void editMovie(
-    String? title,
-    int? year,
-    String? posterUrl,
-  ) {
-    this.title = title;
-    this.year = year;
-    this.posterUrl = posterUrl;
-    notifyListeners();
-  }
 }
